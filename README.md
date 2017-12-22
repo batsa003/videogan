@@ -7,7 +7,7 @@ I hope you find this implementation useful.
 
 Example Generations
 -------------------
-Below are some selected videos during the training of the network. Currently, due to hardware, the videos generated are not high-quality. It was due to a limitation of processing huge dataset of video data. Another possible reason is unnoticed bugs in the implementation could be degrading the model performance.
+Below are some selected videos during the training of the network. Currently, due to hardware limitations, the videos generated are not high-quality. Processing huge dataset of videos needs a powerful GPU. Also, unnoticed bugs in the implementation could be degrading the results.
 
 <table><tr><td>
 <img src='https://media.giphy.com/media/l49JN6JV9Evt49NFS/giphy.gif'>
