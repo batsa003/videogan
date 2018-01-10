@@ -25,7 +25,7 @@ To train a generator for video, see main.py. This file will construct the networ
 Data
 ----
 The data used in the training is from the golf videos from the original paper.
-Make sure you modify self.data_root in the data_loader.py once you download the dataset. The dataset can be downloaded from the website outlined in the Reference section.
+Make sure you modify self.data_root in the data_loader.py once you download the dataset. The dataset can be downloaded from the videogan official website.
 
 Reference:
 ---------
