@@ -17,6 +17,9 @@ def deconv2d(in_channels, out_channels, kernel_size = 4, stride = 2, padding = 1
 def deconv3d_first(in_channels, out_channels):
     return nn.ConvTranspose3d(in_channels, out_channels, kernel_size=(2,4,4))
 
+def deconv3d_video(in_channels, out_channels):
+    return nn.ConvTranspose3d(in_channels, out_channels, kernel_size=(2,1,1))
+
 def deconv3d(in_channels, out_channels, kernel_size = 4, stride = 2, padding = 1):
     return nn.ConvTranspose3d(in_channels, out_channels, kernel_size = kernel_size, stride = stride, padding = padding, bias = True)
 
