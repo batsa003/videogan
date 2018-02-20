@@ -7,12 +7,16 @@ I hope you find this implementation useful.
 
 Example Generations
 -------------------
-Below are some selected videos during the training of the network. Currently, due to hardware limitations, the videos generated are not high-quality. Processing huge dataset of videos needs a powerful GPU. Also, unnoticed bugs in the implementation could be degrading the results.
+Below are some selected videos during the training of the network. Unnoticed bugs in the implementation could be degrading the results.
 
 <table><tr><td>
-<img src='https://media.giphy.com/media/l49JN6JV9Evt49NFS/giphy.gif'>
-<img src='https://media.giphy.com/media/3oFzmtfseE1LYJSBDq/giphy.gif'>
-<img src='https://media.giphy.com/media/3oFzmlwpcN3SGG8TgA/giphy.gif'>
+<img src='https://github.com/batsa003/videogan/blob/master/gen_videos/fake_gifs_1_1299_a.jpg'>
+<img src='https://github.com/batsa003/videogan/blob/master/gen_videos/fake_gifs_1_1299_b.gif'>
+</td><td>
+</td></tr></table>
+<table><tr><td>
+<img src='https://github.com/batsa003/videogan/blob/master/gen_videos/fake_gifs_1_1299_a.jpg'>
+<img src='https://github.com/batsa003/videogan/blob/master/gen_videos/fake_gifs_1_1299_b.gif'>
 </td><td>
 </td></tr></table>
 
