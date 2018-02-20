@@ -8,7 +8,6 @@ try:
 except ImportError:
     from io import BytesIO         # Python 3.x
 
-
 class Logger(object):
 
     def __init__(self, log_dir):

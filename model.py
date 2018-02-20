@@ -127,7 +127,7 @@ class G_encode(nn.Module):
         out = self.model(x)
         #print('G_encode Output =', out.size())
         return out
-
+'''
 if __name__ == '__main__':
     for i in range(1):
         x = Variable(torch.rand([20, 3, 32, 64, 64]).cuda())
@@ -135,18 +135,18 @@ if __name__ == '__main__':
         print('Discriminator input', x.size())
         out = model(x).squeeze()
         print('Discriminator out ', out.size())
-        print out
 
-        #x = Variable(torch.rand([20,3,1,64,64]).cuda())
-        #print('Generator input', x.size())
-        #model = Generator().cuda()
-        #out = model(x)  
-        #print('Generator out ', out.size())
-        #print(type(out.data[0]))
-        #print(out.data[0].size())
-        #x = Variable(torch.rand([13,3,64,64])).cuda()
-        ##x = Variable(torch.rand([13,3,1,64,64]))
-        #print('Generator input', x.size())
-        #model = Generator().cuda()
-        #out = model(x)  
-        #print('Generator out ', out.size())
+        x = Variable(torch.rand([20,3,1,64,64]).cuda())
+        print('Generator input', x.size())
+        model = Generator().cuda()
+        out = model(x)  
+        print('Generator out ', out.size())
+        print(type(out.data[0]))
+        print(out.data[0].size())
+        x = Variable(torch.rand([13,3,64,64])).cuda()
+        #x = Variable(torch.rand([13,3,1,64,64]))
+        print('Generator input', x.size())
+        model = Generator().cuda()
+        out = model(x)  
+        print('Generator out ', out.size())
+'''

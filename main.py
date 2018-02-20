@@ -3,22 +3,20 @@ import torch.nn as nn
 import numpy as np
 import os
 import sys
-os.environ["CUDA_VISIBLE_DEVICES"]="1"
 from tqdm import tqdm
 from torchvision.transforms import ToPILImage
 from PIL import Image
 from torch.autograd import Variable
 import time
-
+import logging
 from model import Discriminator
 from model import Generator
 from data_loader import DataLoader
 from logger import Logger
 from utils import make_gif
+os.environ["CUDA_VISIBLE_DEVICES"]="1"
 
-import logging
-
-# custom weights initialization called on netG and netD
+# Custom weights initialization called on netG and netD
 def weights_init(m):
     classname = m.__class__.__name__
     if classname.find('Conv') != -1:
@@ -27,6 +25,7 @@ def weights_init(m):
         m.weight.data.normal_(1.0, 0.02)
         m.bias.data.fill_(0)
 
+# Text Logger
 def setup_logger(name):
     formatter = logging.Formatter(fmt='%(asctime)s %(levelname)-8s %(message)s',
                     datefmt='%Y-%m-%d %H:%M:%S')
@@ -40,49 +39,13 @@ def setup_logger(name):
     logger.addHandler(screen_handler)
     return logger
 
-def adjust_learning_rate(optimizer, epoch):
-    """Sets the learning rate to the initial LR decayed by 10 every 30 epochs"""
-    lr = args.lr * (0.1 ** (epoch // 30))
-    for param_group in optimizer.param_groups:
-        param_group['lr'] = lr
-
-# x is a [3, 64, 64] Tensor.
+# Saves [3, 64, 64] tensor x as image.
 def save_img(x, filename): 
     x = denorm(x)
     x = x.squeeze()
     to_pil = ToPILImage()
     img = to_pil(x)
     img.save(filename)
-
-text_logger = setup_logger('Train')
-logger = Logger('./logs')
-
-num_epoch = 5
-batchSize = 60
-lr = 0.0002
-l1_lambda = 10
-    
-discriminator = Discriminator()
-generator = Generator()
-discriminator.apply(weights_init)
-generator.apply(weights_init)
-
-if torch.cuda.is_available():
-    discriminator.cuda()
-    generator.cuda()
-
-loss_function = nn.CrossEntropyLoss()
-reg_loss_function = nn.L1Loss()
-#d_optim = torch.optim.Adam(discriminator.parameters(),lr=lr)
-#g_optim = torch.optim.Adam(generator.parameters(),lr=lr)
-d_optim = torch.optim.Adam(discriminator.parameters(), lr, [0.5, 0.999])
-g_optim = torch.optim.Adam(generator.parameters(), lr, [0.5, 0.999])
-
-dataloader = DataLoader(batchSize)
-data_size = len(dataloader.train_index)
-num_batch = data_size//batchSize
-text_logger.info('Total number of in train = ' + str(data_size))
-text_logger.info('Total number of batches per echo = ' + str(num_batch))
 
 def to_variable(x, requires_grad = True):
     if torch.cuda.is_available():
@@ -91,99 +54,92 @@ def to_variable(x, requires_grad = True):
 
 def denorm(x):
     out = (x + 1.0) / 2.0
-    return out.clamp(0, 1)
+    return nn.Tanh(out)
 
+num_epoch = 5
+batchSize = 60
+lr = 0.0002
+l1_lambda = 10
+
+text_logger = setup_logger('Train')
+logger = Logger('./logs')
+    
+discriminator = Discriminator()
+generator = Generator()
+discriminator.apply(weights_init)
+generator.apply(weights_init)
+if torch.cuda.is_available():
+    discriminator.cuda()
+    generator.cuda()
+
+loss_function = nn.CrossEntropyLoss()
+d_optim = torch.optim.Adam(discriminator.parameters(), lr, [0.5, 0.999])
+g_optim = torch.optim.Adam(generator.parameters(), lr, [0.5, 0.999])
+
+dataloader = DataLoader(batchSize)
+data_size = len(dataloader.train_index)
+num_batch = data_size//batchSize
+#text_logger.info('Total number of videos for train = ' + str(data_size))
+#text_logger.info('Total number of batches per echo = ' + str(num_batch))
 
 start_time = time.time()
 counter = 0
 DIR_TO_SAVE = "./gen_videos/"
 if not os.path.exists(DIR_TO_SAVE):
     os.makedirs(DIR_TO_SAVE)
-
 sample_input = None
 sample_input_set = False
-l1_crit = nn.L1Loss()
 
 for current_epoch in tqdm(range(1,num_epoch+1)):
-
     n_updates = 1
-    for batch_index in range(num_batch): # [-1,32,
-        videos = dataloader.get_batch().permute(0,2,1,3,4) # [64,3, 32, 64, 64]
+    for batch_index in range(num_batch):
+        videos = dataloader.get_batch().permute(0,2,1,3,4) # [-1,3,32,64,64]
         videos = to_variable(videos)
         real_labels = to_variable(torch.LongTensor(np.ones(batchSize, dtype = int)), requires_grad = False)
         fake_labels = to_variable(torch.LongTensor(np.zeros(batchSize, dtype = int)), requires_grad = False)
-#        real_labels = to_variable(torch.FloatTensor(np.ones(batchSize, dtype = float)),requires_grad=False)
-#        fake_labels = to_variable(torch.FloatTensor(np.zeros(batchSize, dtype = float)),requires_grad=False)
-#        print 'Video size = ', videos.size()
+
         if not sample_input_set:
             sample_input = videos[0:1,:,0:1,:,:]
             sample_input_set = True
 
         if n_updates % 2 == 1:
-#            print 'Training Discriminator ...'
             discriminator.zero_grad()
             generator.zero_grad()
-            d_optim.zero_grad()
-            outputs = discriminator(videos).squeeze() # [-1,1]
+            outputs = discriminator(videos).squeeze() # [-1,2]
             d_real_loss = loss_function(outputs, real_labels)
-#            print 'd_real_loss = ', d_real_loss
-        
-#            d_real_score = outputs
-
             fake_videos_d = generator(videos[:,:,0:1,:,:])
-#            print 'Fake videos size = ' , fake_videos.size()
-
             outputs = discriminator(fake_videos_d).squeeze()
-
-#            d_fake_score = outputs
-
             d_fake_loss = loss_function(outputs, fake_labels)
-#            print 'fake loss = ', d_fake_loss
             d_loss = d_real_loss + d_fake_loss
             d_loss.backward()
             d_optim.step()
             info = {
-#                 'd_real_0' : d_real_score.mean(dim=0).data[0],
-#                 'd_fake_0' : d_fake_score.mean(dim=0).data[0],
-#                 'd_real_1' : d_real_score.mean(dim=0).data[1],
-#                 'd_fake_1' : d_fake_score.mean(dim=0).data[1],
                  'd_loss': d_loss.data[0]
             }
             for tag,value in info.items():
                 logger.scalar_summary(tag, value, counter)
-#            print 'Discriminator updated'
-
         else:
-#            print 'Training Generator...'
             discriminator.zero_grad()
             generator.zero_grad()
-            g_optim.zero_grad()
             first_frame = videos[:,:,0:1,:,:]
-#            print 'First frame : ', first_frame.size()
             fake_videos = generator(first_frame)
             outputs = discriminator(fake_videos).squeeze()
-
             gen_first_frame = fake_videos[:,:,0:1,:,:]
-            err = torch.mean(torch.abs(first_frame - gen_first_frame)) * l1_lambda
-            g_loss = loss_function(outputs, real_labels) + err
-#            print 'err = ', err
-#            print 'g_loss = ', g_loss
+            reg_loss = torch.mean(torch.abs(first_frame - gen_first_frame)) * l1_lambda
+            g_loss = loss_function(outputs, real_labels) + reg_loss
             g_loss.backward()
             g_optim.step()
-
             info = {
                 'g_loss' : g_loss.data[0],
             }
             for tag,value in info.items():
                 logger.scalar_summary(tag, value, counter)
-#            print 'Generator updated'
 
+            '''
             # Calculate validation loss
             videos = to_variable(dataloader.get_batch('test').permute(0,2,1,3,4)) # [64,3, 32, 64, 64]
             first_frame = videos[:,:,0:1,:,:]
-#            test_fake_videos = generator(first_frame)
             fake_videos = generator(first_frame)
-#            outputs = discriminator(test_fake_videos).squeeze()
             outputs = discriminator(fake_videos).squeeze()
             gen_first_frame = fake_videos[:,:,0:1,:,:]
             err = torch.mean(torch.abs(first_frame - gen_first_frame)) * l1_lambda
@@ -193,12 +149,15 @@ for current_epoch in tqdm(range(1,num_epoch+1)):
             }
             for tag,value in info.items():
                 logger.scalar_summary(tag, value, counter)
+            '''
 
         n_updates += 1
 
         if (batch_index + 1) % 5 == 0:
-            text_logger.info("Epoch [%d/%d], Step[%d/%d], d_loss: %.4f, g_loss: %.4f, g_val_loss: %.4f, time: %4.4f"
-		        % (current_epoch, num_epoch, batch_index+1, num_batch, d_loss.data[0], g_loss.data[0], g_val_loss.data[0], time.time()-start_time))
+            text_logger.info("Epoch [%d/%d], Step[%d/%d], d_loss: %.4f, g_loss: %.4f, \
+                             g_val_loss: %.4f, time: %4.4f" \
+                             % (current_epoch, num_epoch, batch_index+1, num_batch, \
+                             d_loss.data[0], g_loss.data[0], g_val_loss.data[0], time.time()-start_time))
 
         counter += 1
 
@@ -227,8 +186,5 @@ for current_epoch in tqdm(range(1,num_epoch+1)):
             for param_group in g_optim.param_groups:
                 param_group['lr'] = lr
 
-
 torch.save(generator.state_dict(), './generator.pkl')
 torch.save(discriminator.state_dict(), './discriminator.pkl')
-
-# IDEA: Pick quality videos by hand and train on them.

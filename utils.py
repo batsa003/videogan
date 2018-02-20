@@ -1,5 +1,4 @@
 import imageio
-#import torch
 
 # Receives [3,32,64,64] tensor, and creates a gif
 def make_gif(images, filename):
