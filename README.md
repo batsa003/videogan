@@ -5,6 +5,10 @@ This repository contains a PyTorch implementation of [Generating Videos with Sce
 
 I hope you find this implementation useful.
 
+Results
+-------------------
+The golf dataset contains 
+
 Example Generations
 -------------------
 Below are some selected videos during the training of the network. Unnoticed bugs in the implementation could be degrading the results.
@@ -12,11 +16,32 @@ Below are some selected videos during the training of the network. Unnoticed bug
 <table><tr><td>
 <img src='https://github.com/batsa003/videogan/blob/master/gen_videos/fake_gifs_1_1299_a.jpg'>
 <img src='https://github.com/batsa003/videogan/blob/master/gen_videos/fake_gifs_1_1299_b.gif'>
+<img src='https://github.com/batsa003/videogan/blob/master/gen_videos/fake_gifs_1_1399_a.jpg'>
+<img src='https://github.com/batsa003/videogan/blob/master/gen_videos/fake_gifs_1_1399_b.gif'>
 </td><td>
 </td></tr></table>
+
 <table><tr><td>
-<img src='https://github.com/batsa003/videogan/blob/master/gen_videos/fake_gifs_1_1299_a.jpg'>
-<img src='https://github.com/batsa003/videogan/blob/master/gen_videos/fake_gifs_1_1299_b.gif'>
+<img src='https://github.com/batsa003/videogan/blob/master/gen_videos/fake_gifs_1_2199_a.jpg'>
+<img src='https://github.com/batsa003/videogan/blob/master/gen_videos/fake_gifs_1_2199_b.gif'>
+<img src='https://github.com/batsa003/videogan/blob/master/gen_videos/fake_gifs_1_2299_a.jpg'>
+<img src='https://github.com/batsa003/videogan/blob/master/gen_videos/fake_gifs_1_2299_b.gif'>
+</td><td>
+</td></tr></table>
+
+<table><tr><td>
+<img src='https://github.com/batsa003/videogan/blob/master/gen_videos/fake_gifs_1_3199_a.jpg'>
+<img src='https://github.com/batsa003/videogan/blob/master/gen_videos/fake_gifs_1_3199_b.gif'>
+<img src='https://github.com/batsa003/videogan/blob/master/gen_videos/fake_gifs_1_4999_a.jpg'>
+<img src='https://github.com/batsa003/videogan/blob/master/gen_videos/fake_gifs_1_4999_b.gif'>
+</td><td>
+</td></tr></table>
+
+<table><tr><td>
+<img src='https://github.com/batsa003/videogan/blob/master/gen_videos/fake_gifs_2_1099_a.jpg'>
+<img src='https://github.com/batsa003/videogan/blob/master/gen_videos/fake_gifs_2_1099_b.gif'>
+<img src='https://github.com/batsa003/videogan/blob/master/gen_videos/fake_gifs_2_1499_a.jpg'>
+<img src='https://github.com/batsa003/videogan/blob/master/gen_videos/fake_gifs_2_1499_b.gif'>
 </td><td>
 </td></tr></table>
 
