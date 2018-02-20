@@ -9,9 +9,9 @@ Results
 -------------------
 The golf dataset contains about 600,000 videos, and the batch size is 64. Each epoch is around 8500 iterations. The following graphs are discriminator training loss, generator training loss, and generator validation loss over time.
 
-<img src ="https://u.imageresize.org/12b9deaf-b9fc-448b-b24c-4dd48c19023f.png" width="200" height="200"/>
-<img src ="https://u.imageresize.org/5ac7d8c2-1f50-4ac3-995b-631aa93fae18.png" width="200" height="200"/>
-<img src ="https://u.imageresize.org/e65ede8d-9cf5-4f2f-99fc-8114ad4f88c9.png" width="200" height="200"/>
+<img src ="https://u.imageresize.org/12b9deaf-b9fc-448b-b24c-4dd48c19023f.png" width="500" height="500"/>
+<img src ="https://u.imageresize.org/5ac7d8c2-1f50-4ac3-995b-631aa93fae18.png" width="500" height="500"/>
+<img src ="https://u.imageresize.org/e65ede8d-9cf5-4f2f-99fc-8114ad4f88c9.png" width="500" height="500"/>
 
 Example Generations
 -------------------
