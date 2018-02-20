@@ -7,7 +7,7 @@ I hope you find this implementation useful.
 
 Results
 -------------------
-The golf dataset contains about 600,000 videos, and the batch size is 64. Each epoch is around 8500 iterations. The following graphs displays the discriminator training loss, generator training loss, and generator validation loss over time. The model seems to converge around 1000-th iteration in the first epoch, where the first learning rate decay happens.
+The golf dataset contains about 600,000 videos, and we use the batch size of 64. Each epoch is around 8500 iterations. The learning rate is decayed by a factor of 10 every 1000 iterations. A training for one epoch took several days on GPU. The following graphs displays the discriminator training loss, generator training loss, and generator validation loss over time. The model seems to converge around 1000-th iteration in the first epoch, where the first learning rate decay happens.
 
 <img src ="https://u.imageresize.org/12b9deaf-b9fc-448b-b24c-4dd48c19023f.png" width="400" height="400"/>
 <img src ="https://u.imageresize.org/5ac7d8c2-1f50-4ac3-995b-631aa93fae18.png" width="400" height="400"/>
