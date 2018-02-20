@@ -57,7 +57,7 @@ def denorm(x):
     return nn.Tanh(out)
 
 num_epoch = 5
-batchSize = 60
+batchSize = 64
 lr = 0.0002
 l1_lambda = 10
 
