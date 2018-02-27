@@ -53,7 +53,7 @@ Training
 --------
 The code requires a pytorch installation. 
 
-To train a generator for video, see main.py. This file will construct the networks, start many threads to load data, and train the networks.
+To train the model, refer to main.py.
 
 Data
 ----
