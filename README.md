@@ -1,7 +1,7 @@
 PyTorch Implementation of Generating Videos with Scene Dynamics.
 =====================================
 
-This repository contains a PyTorch implementation of [Generating Videos with Scene Dynamics](http://web.mit.edu/vondrick/tinyvideo/) by Carl Vondrick, Hamed Pirsiavash, Antonio Torralba, appeared at NIPS 2016. The model learns to generate tiny videos using adversarial networks.
+This repository contains a PyTorch implementation of [Generating Videos with Scene Dynamics](http://www.cs.columbia.edu/~vondrick/tinyvideo/) by Carl Vondrick, Hamed Pirsiavash, Antonio Torralba, appeared at NIPS 2016. The model learns to generate tiny videos using adversarial networks.
 
 I hope you find this implementation useful.
 
